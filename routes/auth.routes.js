@@ -2,6 +2,16 @@ const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const { request } = require("../app");
 const UserModel = require('../models/User.model')
+const axios = require("axios");
+
+const options = {
+    method: 'GET',
+    url: 'https://crypto-news-live3.p.rapidapi.com/news',
+    headers: {
+      'X-RapidAPI-Key': '8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31',
+      'X-RapidAPI-Host': 'crypto-news-live3.p.rapidapi.com'
+    }
+  };
 
 router.get('/signup', (req, res) => {
     res.render('auth/signup.hbs')
@@ -107,5 +117,16 @@ request.session.destroy()
 res.redirect('/');
 })
 
+
+
+router.get("/news", (req, res) => {
+    axios.request(options, { limit: 10})
+    .then(function (response) {
+    res.render("news.hbs", {news: response.data})
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
+})
 
 module.exports = router;
