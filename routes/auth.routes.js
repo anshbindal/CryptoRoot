@@ -3,6 +3,11 @@ const bcrypt = require('bcryptjs');
 const { request } = require("../app");
 const UserModel = require('../models/User.model')
 const axios = require("axios");
+const cookieParser = require("cookie-parser");
+const { Store } = require("express-session");
+
+
+router.use(cookieParser());
 
 const options = {
     method: 'GET',
@@ -106,16 +111,33 @@ router.get('/profile', checkUser, (req, res) => {
     res.render('auth/profile.hbs', {loggedInUser: req.session.loggedInUser })
 })
 
+
+
+
 router.get('/search', checkUser, (req, res) => {
     res.render('auth/search.hbs', {loggedInUser: req.session.loggedInUser })
 })
 
 
 
-router.get("/logout", (req, res) => {
-request.session.destroy()
-res.redirect('/');
-})
+router.get('/logout',(req,res) => {
+    req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
+
+});
+
+// router.get("/logout", (req, res) => {
+//     console.log(request.session)
+//     request.session
+//     .destroy(function(error) {
+//     Store.destory(error)
+// });
+// res.redirect('/');
+// })
 
 
 
