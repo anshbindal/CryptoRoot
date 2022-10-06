@@ -22,7 +22,7 @@ require("./config")(app);
 const capitalized = require("./utils/capitalized");
 const projectName = "rootcrypto";
 
-app.locals.appTitle = `${capitalized(projectName)} created with RootLauncher`;
+app.locals.appTitle = `${capitalized(projectName)} created with CryptoRoot`;
 
 // 👇 Start handling routes here
 const index = require("./routes/index.routes");
