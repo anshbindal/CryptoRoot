@@ -45,6 +45,10 @@ app.use(session({
 const index = require("./routes/index.routes");
 app.use("/", index);
 
+const pages = require("./routes/pages.routes");
+app.use("/", pages);
+
+
 const auth = require('./routes/auth.routes');
 app.use('/', auth);
 

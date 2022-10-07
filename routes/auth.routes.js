@@ -1,32 +1,22 @@
 const router = require("express").Router();
 const bcrypt = require('bcryptjs');
-const { request } = require("../app");
 const UserModel = require('../models/User.model')
-const axios = require("axios");
-const cookieParser = require("cookie-parser");
-const { Store } = require("express-session");
 
 
-router.use(cookieParser());
 
-const options = {
-    method: 'GET',
-    url: 'https://crypto-news-live3.p.rapidapi.com/news',
-    headers: {
-      'X-RapidAPI-Key': '8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31',
-      'X-RapidAPI-Host': 'crypto-news-live3.p.rapidapi.com'
-    }
-  };
 
+// render signup.hbs
 router.get('/signup', (req, res) => {
     res.render('auth/signup.hbs')
 })
 
+
+// render login.hbs
 router.get('/login', (req, res) => {
     res.render('auth/login.hbs')
 })
 
-
+// singup info gather from signup page. comes through req, access through req.body
 router.post('/signup', (req, res, next) => {
     const {username, email, password} = req.body
     console.log(req.body)
@@ -64,12 +54,15 @@ router.post('/signup', (req, res, next) => {
     
     UserModel.create({username, email, password: hash})
         .then(() => {
-            res.redirect('/')
+            res.redirect('/login')
         })
         .catch((err) => {
             next(err)
         })
 })
+
+
+// login credentials check through req.body
 router.post('/login', (req, res, next) => {
     const {email, password} = req.body
 
@@ -95,30 +88,10 @@ router.post('/login', (req, res, next) => {
         .catch((err) => {
             next(err)
         })
-})
-
-function checkUser(req, res, next){
-    if (req.session.loggedInUser ) {
-        next()
-    }
-    else {
-        res.redirect('/login')
-    }
-}
+});
 
 
-router.get('/profile', checkUser, (req, res) => {
-    res.render('auth/profile.hbs', {loggedInUser: req.session.loggedInUser })
-})
-
-
-
-
-router.get('/search', checkUser, (req, res) => {
-    res.render('auth/search.hbs', {loggedInUser: req.session.loggedInUser })
-})
-
-
+// logout page rendering
 
 router.get('/logout',(req,res) => {
     req.session.destroy((err) => {
@@ -130,25 +103,17 @@ router.get('/logout',(req,res) => {
 
 });
 
-// router.get("/logout", (req, res) => {
-//     console.log(request.session)
-//     request.session
-//     .destroy(function(error) {
-//     Store.destory(error)
-// });
-// res.redirect('/');
-// })
+// checks user logged in
+
+function checkUser(req, res, next){
+    if (req.session.loggedInUser ) {
+        next()
+    }
+    else {
+        res.redirect('/login')
+    }
+}
 
 
-
-router.get("/news", (req, res) => {
-    axios.request(options, { limit: 10})
-    .then(function (response) {
-    res.render("news.hbs", {news: response.data})
-	console.log(response.data);
-}).catch(function (error) {
-	console.error(error);
-});
-})
 
 module.exports = router;
