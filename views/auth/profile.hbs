@@ -1,3 +1,66 @@
 <p>Hello {{loggedInUser.username}}</p>
 
+
+<div>
+
+
+
+</div>
+
+<form action="/profile" method="POST">
+
+
+ <label>Coin</label>
+
+  <input name="purchasedPrice" type="number"  placeholder="Enter your price"  >
+  <input name="quanity" type="number"  placeholder="Enter your quanity"  >
+
+<p> Select one from the given options:
+        <select name="coins">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+ 
+            
+    
+        </select>
+    </p>
+    
+    <button>submit</button>
+</form>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Coin</th>
+      <th scope="col">Quanity</th>
+      <th scope="col">Total value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>BTC</td>
+      <td>ETH</td>
+      <td>SOL</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>ETH</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>SOL</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
 <a href="/logout"><button>logout</button></a>

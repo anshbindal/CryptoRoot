@@ -26,6 +26,7 @@ app.locals.appTitle = `${capitalized(projectName)} created with CryptoRoot`;
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const cookieParser = require("cookie-parser");
 
 app.use(session({
   secret: 'charmander',
@@ -43,6 +44,10 @@ app.use(session({
 // 👇 Start handling routes here
 const index = require("./routes/index.routes");
 app.use("/", index);
+
+const pages = require("./routes/pages.routes");
+app.use("/", pages);
+
 
 const auth = require('./routes/auth.routes');
 app.use('/', auth);

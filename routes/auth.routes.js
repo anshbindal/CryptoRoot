@@ -1,17 +1,22 @@
 const router = require("express").Router();
 const bcrypt = require('bcryptjs');
-const { request } = require("../app");
 const UserModel = require('../models/User.model')
 
+
+
+
+// render signup.hbs
 router.get('/signup', (req, res) => {
     res.render('auth/signup.hbs')
 })
 
+
+// render login.hbs
 router.get('/login', (req, res) => {
     res.render('auth/login.hbs')
 })
 
-
+// singup info gather from signup page. comes through req, access through req.body
 router.post('/signup', (req, res, next) => {
     const {username, email, password} = req.body
     console.log(req.body)
@@ -49,12 +54,15 @@ router.post('/signup', (req, res, next) => {
     
     UserModel.create({username, email, password: hash})
         .then(() => {
-            res.redirect('/')
+            res.redirect('/login')
         })
         .catch((err) => {
             next(err)
         })
 })
+
+
+// login credentials check through req.body
 router.post('/login', (req, res, next) => {
     const {email, password} = req.body
 
@@ -80,7 +88,22 @@ router.post('/login', (req, res, next) => {
         .catch((err) => {
             next(err)
         })
-})
+});
+
+
+// logout page rendering
+
+router.get('/logout',(req,res) => {
+    req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
+
+});
+
+// checks user logged in
 
 function checkUser(req, res, next){
     if (req.session.loggedInUser ) {
@@ -91,21 +114,6 @@ function checkUser(req, res, next){
     }
 }
 
-
-router.get('/profile', checkUser, (req, res) => {
-    res.render('auth/profile.hbs', {loggedInUser: req.session.loggedInUser })
-})
-
-router.get('/search', checkUser, (req, res) => {
-    res.render('auth/search.hbs', {loggedInUser: req.session.loggedInUser })
-})
-
-
-
-router.get("/logout", (req, res) => {
-request.session.destroy()
-res.redirect('/');
-})
 
 
 module.exports = router;
