@@ -69,9 +69,6 @@ router.get("/wallet", async (req, res, next) => {
   const { _id } = req.session.loggedInUser;
   const apiResult = await priceApi();
   const apiData = apiResult.data;
-
-  // console.log(apiResult.data);
-
   CoinModel.find({ userId: _id })
     .then((data) => {
       console.log("This is the list of coins this user has :=======> ", data);
