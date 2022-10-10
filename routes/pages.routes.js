@@ -18,13 +18,8 @@ function checkUser(req, res, next){
 }
 
 
-// renders profile.hbs
-
-  router.get('/profile', checkUser, (req, res) => {
-    res.render('auth/profile.hbs', {loggedInUser: req.session.loggedInUser })
 
     
-})
 
 
 
