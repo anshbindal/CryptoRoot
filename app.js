@@ -40,6 +40,9 @@ app.use(session({
     ttl:  24 * 60 * 60 // = 1 days.
   })
 }));
+ 
+
+
 
 // 👇 Start handling routes here
 const index = require("./routes/index.routes");

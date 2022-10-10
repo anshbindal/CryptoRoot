@@ -111,6 +111,69 @@ router.get("/wallet", async (req, res, next) => {
     });
 });
 
+
+
+
+
+router.get("/edit", (req, res, next) => {
+    const { _id } = req.session.loggedInUser;
+console.log(_id)
+  
+    // console.log(apiResult.data);
+  
+    CoinModel.find({ userId: _id })
+      .then((data) => {
+        console.log("This is the list of coins this user has :=======> ", data);
+        
+
+ 
+        //   console.log("finalData", finalData);
+  
+        res.render("edit.hbs", {data});
+      })
+      .catch((err) => {
+        next(err);
+      });
+  });
+
+
+  router.post('/edit', (req, res) => {
+    const { _id } = req.session.loggedInUser;
+    console.log(req.body)
+    CoinModel.findOneAndUpdate({ userId: _id }, req.body)
+        .then(() => {
+          res.redirect(`/wallet`)
+        })
+        .catch((err) => {
+          console.log('Some error in finding', err)
+        })
+    // Iteration #4: Update the drone
+    // ... your code here
+  });
+
+
+
+
+  router.post('/delete', (req, res, next) => {
+    const { _id } = req.session.loggedInUser;
+    
+    CoinModel.findOneAndDelete({ userId: _id })
+      .then(() => {
+        res.redirect(`/wallet`) // redirects to HOME PAG
+      })
+      .catch((err) => {
+        console.log('Some error in finding', err)
+      })
+    // Iteration #5: Delete the drone
+    // ... your code here
+  });
+
+
+
+//   router.post("/wallet", async (req, res, next) => {
+//     const { _id } = req.session.loggedInUser;
+
+
  // news api
 
 const options = {

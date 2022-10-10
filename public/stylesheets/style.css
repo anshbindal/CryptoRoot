@@ -3,10 +3,40 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+button {
+  background-color: white;
+
+}
+
+
+
+
+body {
+  background-color: black !important;
+  color: white !important;
+}
+
 a {
   color: #00b7ff;
 }
 
 h1 {
   color: 15px;
+}
+
+
+tr {
+  color: white;
+  
+}
+
+th {
+  margin: 10px 0;
+}
+
+button:hover,
+button:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+  background-color: gray;
 }
