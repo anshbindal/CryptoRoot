@@ -10,6 +10,9 @@ function checkUser(req, res, next) {
   }
 }
 
+
+
+
 // renders profile.hbs
 
 router.get("/profile", checkUser, (req, res) => {
@@ -105,27 +108,90 @@ router.get("/wallet", async (req, res, next) => {
     });
 });
 
-//  news api
 
-// const options = {
-//   method: "GET",
-//   url: "https://crypto-news-live3.p.rapidapi.com/news",
-//   headers: {
-//     "X-RapidAPI-Key": "8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31",
-//     "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
-//   },
-// };
 
-// router.get("/news", (req, res) => {
-//   axios
-//     .request(options, { limit: 10 })
-//     .then(function (response) {
-//       res.render("news.hbs", { news: response.data });
-//       console.log(response.data);
-//     })
-//     .catch(function (error) {
-//       console.error(error);
-//     });
-// });
+
+
+router.get("/edit", (req, res, next) => {
+    const { _id } = req.session.loggedInUser;
+console.log(_id)
+  
+    // console.log(apiResult.data);
+  
+    CoinModel.find({ userId: _id })
+      .then((data) => {
+        console.log("This is the list of coins this user has :=======> ", data);
+        
+
+ 
+        //   console.log("finalData", finalData);
+  
+        res.render("edit.hbs", {data});
+      })
+      .catch((err) => {
+        next(err);
+      });
+  });
+
+
+  router.post('/edit', (req, res) => {
+    const { _id } = req.session.loggedInUser;
+    console.log(req.body)
+    CoinModel.findOneAndUpdate({ userId: _id }, req.body)
+        .then(() => {
+          res.redirect(`/wallet`)
+        })
+        .catch((err) => {
+          console.log('Some error in finding', err)
+        })
+    // Iteration #4: Update the drone
+    // ... your code here
+  });
+
+
+
+
+  router.post('/delete', (req, res, next) => {
+    const { _id } = req.session.loggedInUser;
+    
+    CoinModel.findOneAndDelete({ userId: _id })
+      .then(() => {
+        res.redirect(`/wallet`) // redirects to HOME PAG
+      })
+      .catch((err) => {
+        console.log('Some error in finding', err)
+      })
+    // Iteration #5: Delete the drone
+    // ... your code here
+  });
+
+
+
+//   router.post("/wallet", async (req, res, next) => {
+//     const { _id } = req.session.loggedInUser;
+
+
+ // news api
+
+const options = {
+  method: "GET",
+  url: "https://crypto-news-live3.p.rapidapi.com/news",
+  headers: {
+    "X-RapidAPI-Key": "8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31",
+    "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
+  },
+};
+
+router.get("/news", (req, res) => {
+  axios
+    .request(options, { limit: 10 })
+    .then(function (response) {
+      res.render("news.hbs", { news: response.data });
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+});
 
 module.exports = router;
