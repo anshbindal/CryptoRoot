@@ -1,101 +1,134 @@
 const router = require("express").Router();
-
-const UserModel = require('../models/User.model')
-const CoinModel = require('../models/Coins.model')
+const CoinModel = require("../models/Coin.model");
 const axios = require("axios");
 
-const Coin = require("../models/Coins.model");
-
-// 123Abc!!
-
-function checkUser(req, res, next){
-    if (req.session.loggedInUser ) {
-        next()
-    }
-    else {
-        res.redirect('/login')
-    }
+function checkUser(req, res, next) {
+  if (req.session.loggedInUser) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
 }
-
 
 // renders profile.hbs
 
-  router.get('/profile', checkUser, (req, res) => {
-    res.render('auth/profile.hbs', {loggedInUser: req.session.loggedInUser })
-
-    
-})
-
-
-
+router.get("/profile", checkUser, (req, res) => {
+  res.render("auth/profile.hbs", { loggedInUser: req.session.loggedInUser });
+});
 
 // pulls info from profile form, in to req. get by using req.body
 
-router.post('/profile', (req, res, next) => {
-    console.log(req.body)
-    const {coins, purchasedPrice, quanity } = req.body
-    const {_id} = req.session.loggedInUser
-    console.log(coins, purchasedPrice, quanity)
-    CoinModel.create({coins, purchasedPrice, quanity, userId: _id})
+router.post("/profile", (req, res, next) => {
+  //   console.log(req.body);
+  const { coin, purchasedPrice, quantity } = req.body;
+  const { _id } = req.session.loggedInUser;
+  //   console.log(coin, purchasedPrice, quantity);
+  CoinModel.create({
+    coin,
+    purchasedPrice,
+    quantity,
+    purchaseValue: purchasedPrice * quantity,
+    userId: _id,
+  })
     .then(() => {
-        console.log("coin selected sucessfully")
-        res.redirect('/profile');
+      console.log("coin selected sucessfully");
+      res.redirect("/profile");
     })
     .catch((err) => {
-        next(err)
+      next(err);
+    });
+});
+function priceApi() {
+  let response = null;
+  return new Promise(async (resolve, reject) => {
+    try {
+      response = await axios.get(
+        "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        {
+          headers: {
+            "X-CMC_PRO_API_KEY": "824bbdd4-d5e7-4ae8-85e2-358de206f1fa",
+          },
+        }
+      );
+    } catch (ex) {
+      response = null;
+      // error
+      console.log(ex);
+      reject(ex);
+    }
+    if (response) {
+      // success
+      const json = response.data;
+      //   console.log(json);
+      resolve(json);
+    }
+  });
+}
+
+router.get("/wallet", async (req, res, next) => {
+  const { _id } = req.session.loggedInUser;
+  const apiResult = await priceApi();
+  const apiData = apiResult.data;
+
+  // console.log(apiResult.data);
+
+  CoinModel.find({ userId: _id })
+    .then((data) => {
+      console.log("This is the list of coins this user has :=======> ", data);
+
+      let finalData = data.map((ele) => {
+        console.log("Ele :=====> ", ele);
+
+        let filteredData = apiData.filter((element) => {
+          return element.symbol === ele.coin;
+        });
+
+        console.log(
+          "This is the coin that matched ele.coin :=====> ",
+          filteredData
+        );
+
+        const price = filteredData[0].quote.USD.price;
+        console.log("price of that coin :========> ", price);
+
+        return {
+          coin: ele.coin,
+          quantity: ele.quantity,
+          purchaseValue: ele.purchaseValue,
+          currentValue: (ele.quantity * price).toFixed(0),
+        };
+      });
+
+      //   console.log("finalData", finalData);
+
+      res.render("wallet.hbs", { finalData });
     })
-})
-
-
-//maybe if we need to populate full user info
-
-// router.get('/profile', (req, res, next) => {
-//     CoinModel.find().populate('userId')
-//       .then(( data) => {
-//         console.log(data)
-//           res.json(data)
-//       })
-//       .catch((err) => {
-//         next(err)
-//       })
-// })
-
-
-router.get('/wallet', () => {
-    CoinModel.find({userId: req.session.loggedInUser._id})
-        .then((coins) => {
-            let coinSymbols = coins.map(obj => obj.coins)
-            let apires = axios.request()
-            apires.data.forEach(() => {
-
-            })
-        })
-})
-
+    .catch((err) => {
+      next(err);
+    });
+});
 
 //  news api
 
-const options = {
-    method: 'GET',
-    url: 'https://crypto-news-live3.p.rapidapi.com/news',
-    headers: {
-      'X-RapidAPI-Key': '8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31',
-      'X-RapidAPI-Host': 'crypto-news-live3.p.rapidapi.com'
-    }
-  };
+// const options = {
+//   method: "GET",
+//   url: "https://crypto-news-live3.p.rapidapi.com/news",
+//   headers: {
+//     "X-RapidAPI-Key": "8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31",
+//     "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
+//   },
+// };
 
-  router.get("/news", (req, res) => {
-    axios.request(options, { limit: 10})
-    .then(function (response) {
-    res.render("news.hbs", {news: response.data})
-	console.log(response.data);
-}).catch(function (error) {
-	console.error(error);
-});
-})
-
-
-
-
+// router.get("/news", (req, res) => {
+//   axios
+//     .request(options, { limit: 10 })
+//     .then(function (response) {
+//       res.render("news.hbs", { news: response.data });
+//       console.log(response.data);
+//     })
+//     .catch(function (error) {
+//       console.error(error);
+//     });
+// });
 
 module.exports = router;
