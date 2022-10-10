@@ -1,0 +1,21 @@
+<table class="table">
+  <thead>
+    <tr>
+
+      <th scope="col">Coin</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Purchased Value</th>
+      <th scope="col">Current Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each finalData}}
+      <tr>
+        <td>{{this.coin}}</td>
+        <td>{{this.quantity}}</td>
+        <td>{{this.purchaseValue}}</td>
+        <td>{{this.currentValue}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
