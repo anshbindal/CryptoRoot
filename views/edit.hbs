@@ -1,40 +1,30 @@
-    {{#each data}}
-      <h1>Edit {{this.coin}}</h1>
-<form method="post" action="/edit" class="row g-3">
+<h1>Edit {{data.coin}}</h1>
+<form method="post" action="/edit/{{data._id}}" class="row g-3">
   <div class="col-md-6">
-    <label  class="form-label">Quantity</label>
-    <input value="{{this.quantity}}"  name="quantity" type="number" class="form-control" id="name">
+    <label class="form-label">Quantity</label>
+    <input
+      value="{{data.quantity}}"
+      name="quantity"
+      type="number"
+      class="form-control"
+      id="name"
+    />
   </div>
-   <div class="col-md-6">
-    <label  class="form-label">Purchased Price</label>
-    <input value="{{this.purchasedPrice}}" name="purchasedPrice" type="number" class="form-control" id="propellers">
+  <div class="col-md-6">
+    <label class="form-label">Purchased Price</label>
+    <input
+      value="{{data.purchasedPrice}}"
+      name="purchasedPrice"
+      type="number"
+      class="form-control"
+      id="propellers"
+    />
   </div>
-    <div class="col-md-6">
-    <label class="form-label">Purchased Value</label>
-    <input value="{{this.purchaseValue}}"  name="purchaseValue" type="number" class="form-control" id="propellers">
-  </div>
-
-
 
   <div class="col-12">
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 </form>
-<form method="post" action="/delete">
-    <button type="submit" class="btn btn-primary">Delete</button>
+<form method="post" action="/delete/{{data._id}}">
+  <button type="submit" class="btn btn-primary">Delete</button>
 </form>
-
- 
-    {{/each}}
-
-
-    <h1>hey</h1>
-{{!-- 
-         <tr>
-        <td>{{this.coin}}</td>
-        <td>{{this.quantity}}</td>
-        <td>{{this.purchaseValue}}</td>
-        <td>{{this.currentValue}}</td>
-      </tr>  --}}
-
-
