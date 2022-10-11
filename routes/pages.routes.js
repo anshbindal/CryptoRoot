@@ -65,7 +65,7 @@ function priceApi() {
   });
 }
 
-router.get("/wallet", async (req, res, next) => {
+router.get("/wallet", checkUser, async (req, res, next) => {
   const { _id } = req.session.loggedInUser;
   const apiResult = await priceApi();
   const apiData = apiResult.data;
@@ -143,6 +143,23 @@ router.post("/delete/:coinId", (req, res, next) => {
     })
     .catch((err) => {
       console.log("Some error in finding", err);
+    });
+});
+
+router.get("/chart", (req, res, next) => {
+  const { _id } = req.session.loggedInUser;
+  CoinModel.find({ userId: _id })
+    .then((data) => {
+      console.log("This is the list of coins this user has :=======> ", data);
+      let indiData = data.map((ele) => {
+        console.log("Ele :=====> ", ele);
+
+        return {};
+      });
+      res.render("chart.hbs", { data });
+    })
+    .catch((err) => {
+      next(err);
     });
 });
 
