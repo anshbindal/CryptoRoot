@@ -8,8 +8,14 @@ button {
 
 }
 
+.container-fluid {
+  background-color: black;
+}
+
+
 .navbar {
   margin-bottom: 20px;
+
 }
 
 .login {
