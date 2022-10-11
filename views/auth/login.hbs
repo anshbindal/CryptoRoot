@@ -1,14 +1,15 @@
-<form action="/login" method="POST">
+<h1 class="login">Welcome back!</h1>
 
-  <label>Email</label>
+<form class="login" action="/login" method="POST">
+
+  <label>Email:</label>
   <input name="email" type="text"  placeholder="Enter your email"  >
 
-  <label>Password</label>
+  <label>Password:</label>
   <input name="password" type="password"  placeholder="Enter your Password"  >
-  <button>Sign In</button>
+  <button class="btn btn-dark" >Sign In</button>
 </form>
 {{#if error}}
 <p class="error">{{error}}</p>
 {{/if}}
 
-<a href="/"><button>home</button></a>

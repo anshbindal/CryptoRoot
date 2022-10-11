@@ -8,15 +8,54 @@
       <title>{{appTitle}}</title>
       <link rel="stylesheet" href="/stylesheets/style.css" />
            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+ 
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
    </head>
 
    <body>
-<a href="/signup"><button class="loggeOut">signup</button></a>
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">RootCrypto</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/wallet">Wallet</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Signup</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="/news">News</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+      
+      </span>
+    </div>
+  </div>
+</nav>
+
+
+{{!-- 
+old buttons prob delete --}}
+
+{{!-- <a href="/signup"><button class="loggeOut">signup</button></a>
 <a href="/login"><button class="loggedOut">login</button></a>
 <a href="/news"><button>news</button></a>
 <a href="/"><button>home</button></a>
-<a href="/wallet"><button class="logged"></button></a>
+<a href="/wallet"><button class="logged"></button></a> --}}
 
       {{{body}}}
 

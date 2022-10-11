@@ -99,6 +99,7 @@ router.get("/wallet", async (req, res, next) => {
           quantity: ele.quantity,
           purchaseValue: ele.purchaseValue,
           currentValue: (ele.quantity * price).toFixed(0),
+          price : price,
         };
       });
 
@@ -138,9 +139,10 @@ console.log(_id)
 
 
   router.post('/edit', (req, res) => {
-    const { _id } = req.session.loggedInUser;
+    let= { _id } = req.session.loggedInUser;
+    userId = _id
     console.log(req.body)
-    CoinModel.findOneAndUpdate({ userId: _id }, req.body)
+    CoinModel.findOneAndUpdate({ _id: userId }, req.body)
         .then(() => {
           res.redirect(`/wallet`)
         })
@@ -157,7 +159,8 @@ console.log(_id)
   router.post('/delete', (req, res, next) => {
     const { _id } = req.session.loggedInUser;
     
-    CoinModel.findOneAndDelete({ userId: _id })
+    
+    CoinModel.findOneAndDelete({ _id : id })
       .then(() => {
         res.redirect(`/wallet`) // redirects to HOME PAG
       })
