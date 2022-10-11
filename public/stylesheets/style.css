@@ -29,7 +29,7 @@ select {
 }
 
 label {
-  margin-right: 10px;
+
   font-family: 'Space Mono', monospace;
 
 }
@@ -76,6 +76,10 @@ body {
 
 }
 
+label {
+  margin-bottom: 10px;
+}
+
 a {
   color: #00b7ff;
 }
@@ -87,12 +91,14 @@ h1 {
 
 tr {
   color: white;
+  margin-bottom: 30px;
   
 }
 
 th {
-  margin: 10px 0;
+  margin: 40px 0;
   font-family: 'Space Mono', monospace;
+  font-weight: bold;
 
 }
 
@@ -103,8 +109,37 @@ button:focus {
   background-color: gray;
 }
 
+
+.inLog {
+  display: block;
+  justify-content: center;
+}
+
+
+.profile {
+  margin: 60px 0;
+}
+
+.loginPage {
+  display: flex;
+  justify-content: center;
+}
+
+#myChart {
+  margin: auto;
+  width: 700px !important;
+  height: 700px !important;
+}
+
+
 .frontImg {
   width: 500px
+}
+
+
+.signupImg {
+  width: 800px;
+  height: 300px;
 }
 
 
@@ -133,15 +168,21 @@ button:focus {
 }
 
 
-.signUp {
+/* .signUp {
   width: 30%;
-}
+} */
 
 
 #space {
-  margin-right: 10px;
+  margin-right: 25px;
 }
 
+
+#logoutBtn{
+  background-color: #ecd38c ;
+  color: black;
+  font-weight: bold;
+}
 
 .sign {
   display: flex;

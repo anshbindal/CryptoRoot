@@ -1,6 +1,8 @@
-<p>Hello {{loggedInUser.username}}</p>
+<div class="loginPage">
+<div class="inLog">
+<p>Hello {{loggedInUser.username}}!!</p>
 
-<form action="/profile" method="POST">
+<form class="profile" action="/profile" method="POST">
   <p>
     Select one from the given options:
     <select name="coin">
@@ -23,6 +25,8 @@
 </form>
 <p id="message"></p>
 
-<a href="/wallet"><button class="btn btn-dark">Wallet</button></a>
+<a href="/wallet"><button id="space" class="btn btn-dark">Wallet</button></a>
 
-<a href="/logout"><button class="btn btn-dark">logout</button></a>
+<a href="/logout"><button id="logoutBtn" class="btn btn-dark">logout</button></a>
+</div>
+</div>
