@@ -65,13 +65,10 @@ function priceApi() {
   });
 }
 
-router.get("/wallet", async (req, res, next) => {
+router.get("/wallet", checkUser, async (req, res, next) => {
   const { _id } = req.session.loggedInUser;
   const apiResult = await priceApi();
   const apiData = apiResult.data;
-
-  // console.log(apiResult.data);
-
   CoinModel.find({ userId: _id })
     .then((data) => {
       console.log("This is the list of coins this user has :=======> ", data);
@@ -96,6 +93,7 @@ router.get("/wallet", async (req, res, next) => {
           quantity: ele.quantity,
           purchaseValue: ele.purchaseValue,
           currentValue: (ele.quantity * price).toFixed(0),
+          _id: ele._id,
         };
       });
 
@@ -108,27 +106,84 @@ router.get("/wallet", async (req, res, next) => {
     });
 });
 
-//  news api
+router.get("/edit/:coinId", (req, res, next) => {
+  const { coinId } = req.params;
+  CoinModel.findById(coinId)
+    .then((data) => {
+      // console.log("This is the list of coins this user has :=======> ", data);
+      res.render("edit.hbs", { data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
-// const options = {
-//   method: "GET",
-//   url: "https://crypto-news-live3.p.rapidapi.com/news",
-//   headers: {
-//     "X-RapidAPI-Key": "8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31",
-//     "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
-//   },
-// };
+router.post("/edit/:coinId", (req, res) => {
+  const { coinId } = req.params;
+  const { quantity, purchasedPrice } = req.body;
+  // console.log(`This is the request body`, req.body);
+  CoinModel.findByIdAndUpdate(coinId, {
+    purchasedPrice,
+    quantity,
+    purchaseValue: purchasedPrice * quantity,
+  })
+    .then(() => {
+      res.redirect(`/wallet`);
+    })
+    .catch((err) => {
+      console.log("Some error in finding", err);
+    });
+});
 
-// router.get("/news", (req, res) => {
-//   axios
-//     .request(options, { limit: 10 })
-//     .then(function (response) {
-//       res.render("news.hbs", { news: response.data });
-//       console.log(response.data);
-//     })
-//     .catch(function (error) {
-//       console.error(error);
-//     });
-// });
+router.post("/delete/:coinId", (req, res, next) => {
+  const { coinId } = req.params;
+  CoinModel.findByIdAndDelete(coinId)
+    .then(() => {
+      res.redirect(`/wallet`);
+    })
+    .catch((err) => {
+      console.log("Some error in finding", err);
+    });
+});
+
+router.get("/chart", (req, res, next) => {
+  const { _id } = req.session.loggedInUser;
+  CoinModel.find({ userId: _id })
+    .then((data) => {
+      console.log("This is the list of coins this user has :=======> ", data);
+      let indiData = data.map((ele) => {
+        console.log("Ele :=====> ", ele);
+
+        return {};
+      });
+      res.render("chart.hbs", { data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+// news api
+
+const options = {
+  method: "GET",
+  url: "https://crypto-news-live3.p.rapidapi.com/news",
+  headers: {
+    "X-RapidAPI-Key": "8784912ff7msh059048cc966813ap157d9fjsnfd45ffdcab31",
+    "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
+  },
+};
+
+router.get("/news", (req, res) => {
+  axios
+    .request(options, { limit: 10 })
+    .then(function (response) {
+      res.render("news.hbs", { news: response.data });
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+});
 
 module.exports = router;
