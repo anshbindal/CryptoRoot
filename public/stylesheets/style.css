@@ -12,6 +12,12 @@ button {
   background-color: black;
 }
 
+select {
+  background-color: #212429 ;
+  color: white;
+  font-family: 'Space Mono', monospace;
+}
+
 
 .navbar {
   margin-bottom: 20px;
@@ -51,6 +57,10 @@ h1 {
 
 }
 
+
+p {
+  font-family: 'Space Mono', monospace;
+}
 
 a {
   font-family: 'Space Mono', monospace;
