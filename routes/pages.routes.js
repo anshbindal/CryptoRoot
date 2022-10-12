@@ -65,7 +65,7 @@ function priceApi() {
   });
 }
 
-router.get("/wallet", checkUser , async (req, res, next) => {
+router.get("/wallet", checkUser, async (req, res, next) => {
   const { _id } = req.session.loggedInUser;
   const apiResult = await priceApi();
   const apiData = apiResult.data;
@@ -157,45 +157,37 @@ const options = {
   },
 };
 
-
-
 router.get("/chart", (req, res, next) => {
   const { _id } = req.session.loggedInUser;
-  let btcTotal = 0
-  let ethTotal = 0
-  let solTotal = 0
+  let btcTotal = 0;
+  let ethTotal = 0;
+  let solTotal = 0;
   CoinModel.find({ userId: _id })
 
     .then((data) => {
-      console.log(data)
-      for (let obj of data ) {
-        console.log(obj)
-        if ( obj.coin == "BTC") { 
-          btcTotal = btcTotal + obj.purchaseValue
-        } else if ( obj.coin == "ETH") {
-          ethTotal = ethTotal + obj.purchaseValue
+      console.log(data);
+      for (let obj of data) {
+        console.log(obj);
+        if (obj.coin == "BTC") {
+          btcTotal = btcTotal + obj.purchaseValue;
+        } else if (obj.coin == "ETH") {
+          ethTotal = ethTotal + obj.purchaseValue;
         } else if (obj.coin == "SOL") {
-          solTotal = solTotal + obj.purchaseValue
-        } 
+          solTotal = solTotal + obj.purchaseValue;
+        }
       }
-      let chartData = [btcTotal, ethTotal, solTotal]
-      console.log(chartData)
-      let chartLabels = ['BTC', 'ETH', 'SOL']
-      console.log( `heyhey`, btcTotal )
-      // console.log("This is the list of coins this user has :=======> ", data);
+      let chartData = [btcTotal, ethTotal, solTotal];
+      // console.log(chartData);
+      let chartLabels = ["BTC", "ETH", "SOL"];
       res.render("charts.hbs", {
         chartData: JSON.stringify(chartData),
-        chartLabels: JSON.stringify(chartLabels)
+        chartLabels: JSON.stringify(chartLabels),
       });
     })
     .catch((err) => {
       next(err);
     });
-    
 });
-
-
-
 
 router.get("/news", (req, res) => {
   axios
