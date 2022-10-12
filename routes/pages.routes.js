@@ -156,7 +156,7 @@ router.get("/chart", (req, res, next) => {
 
         return {};
       });
-      res.render("chart.hbs", { data });
+      res.render("charts.hbs", { data });
     })
     .catch((err) => {
       next(err);
