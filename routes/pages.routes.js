@@ -146,6 +146,23 @@ router.post("/delete/:coinId", (req, res, next) => {
     });
 });
 
+router.get("/chart", (req, res, next) => {
+  const { _id } = req.session.loggedInUser;
+  CoinModel.find({ userId: _id })
+    .then((data) => {
+      console.log("This is the list of coins this user has :=======> ", data);
+      let indiData = data.map((ele) => {
+        console.log("Ele :=====> ", ele);
+
+        return {};
+      });
+      res.render("chart.hbs", { data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 // news api
 
 const options = {
